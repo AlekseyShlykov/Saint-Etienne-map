@@ -1,16 +1,48 @@
 [
   {
     "id": "1",
-    "title": "Musée de la Mine (Puits Couriot)",
-    "excerpt": "Бывшая угольная шахта Сент-Этьена, сегодня — музей: спуск в забои, машины, истории шахтёров и целая эпоха промышленного города.",
+    "title": {
+      "fr": "Musée de la Mine (Puits Couriot)",
+      "en": "Mine Museum (Puits Couriot)",
+      "de": "Bergbaumuseum (Puits Couriot)",
+      "es": "Museo de la Mina (Puits Couriot)",
+      "it": "Museo della Miniera (Puits Couriot)",
+      "ja": "鉱山博物館（ピュイ・クリオ）",
+      "ru": "Музей шахты (Puits Couriot)"
+    },
+    "excerpt": {
+      "fr": "Ancien puits de charbon de Saint-Étienne, aujourd'hui musée : descente dans les galeries, machines, histoires des mineurs et toute une époque de la ville industrielle.",
+      "en": "Former coal mine of Saint-Étienne, now a museum: descend into the galleries, see the machinery and the miners' stories, and a whole industrial era.",
+      "de": "Ehemaliges Kohlebergwerk von Saint-Étienne, heute Museum: Fahrt in die Stollen, Maschinen, Geschichten der Bergleute und eine ganze Industrieepoche.",
+      "es": "Antigua mina de carbón de Saint-Étienne, hoy museo: descenso a las galerías, máquinas, historias de mineros y toda una época industrial.",
+      "it": "Ex miniera di carbone di Saint-Étienne, oggi museo: discesa nelle gallerie, macchinari, storie di minatori e un'intera epoca industriale.",
+      "ja": "サン＝テティエンヌの旧炭鉱、現在は博物館。坑道への降下、機械、坑夫の歴史と産業時代の息吹を体感できます。",
+      "ru": "Бывшая угольная шахта Сент-Этьена, сегодня — музей: спуск в забои, машины, истории шахтёров и целая эпоха промышленного города."
+    },
     "image": "musee-mine.png",
     "coordinates": { "lng": 4.376820731570836, "lat": 45.43882696765149 },
     "slug": "musee-mine"
   },
   {
     "id": "2",
-    "title": "Parc de l'Europe",
-    "excerpt": "Моё любимое место в городе — здесь я отключаюсь от суеты, гуляю с собакой и просто дышу. Зелень, тишина и ощущение, что время остановилось.",
+    "title": {
+      "fr": "Parc de l'Europe",
+      "en": "Parc de l'Europe",
+      "de": "Parc de l'Europe",
+      "es": "Parc de l'Europe",
+      "it": "Parc de l'Europe",
+      "ja": "ヨーロッパ公園",
+      "ru": "Парк Европы"
+    },
+    "excerpt": {
+      "fr": "Mon endroit préféré en ville — ici je me déconnecte du bruit, je me promène avec le chien et je respire. Le vert, le calme et l'impression que le temps s'arrête.",
+      "en": "My favourite spot in the city — here I switch off from the hustle, walk the dog and just breathe. Green space, silence and the feeling that time has stopped.",
+      "de": "Mein Lieblingsort in der Stadt — hier schalte ich ab, gehe mit dem Hund spazieren und atme einfach. Grün, Stille und das Gefühl, die Zeit steht still.",
+      "es": "Mi lugar favorito en la ciudad — aquí me desconecto del ajetreo, paseo al perro y respiro. Verde, silencio y la sensación de que el tiempo se detiene.",
+      "it": "Il mio posto preferito in città — qui mi disconnetto dalla frenesia, passeggio con il cane e respiro. Verde, silenzio e la sensazione che il tempo si fermi.",
+      "ja": "街で一番好きな場所。ここでは喧騒を離れ、犬と散歩してただ息をする。緑と静けさ、時間が止まったような感覚。",
+      "ru": "Моё любимое место в городе — здесь я отключаюсь от суеты, гуляю с собакой и просто дышу. Зелень, тишина и ощущение, что время остановилось."
+    },
     "image": "parc-europe.png",
     "coordinates": { "lng": 4.416003231681164, "lat": 45.42115629756233 },
     "slug": "parc-europe"

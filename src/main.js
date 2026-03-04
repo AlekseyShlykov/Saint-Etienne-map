@@ -194,6 +194,62 @@ const translations = {
     formCancel: 'Annulla',
     formSubmit: 'Invia',
   },
+  ja: {
+    title: '芸術家の目を通したサン＝テティエンヌ',
+    openArticle: '記事を開く',
+    contact: 'サン＝テティエンヌでお気に入りの場所を地図に追加するには、次のアドレスまでご連絡ください：',
+    contactOr: '',
+    addPlaceBtn: 'お気に入りの場所を地図に追加',
+    formTitle: '場所を追加',
+    formImage: '画像',
+    formPlaceTitle: '記事のタイトル',
+    formPlaceTitlePlaceholder: '例： Place Jean Jaurès',
+    formImageReq: 'JPGまたはPNG、最大2MB、推奨サイズ1200×800px。',
+    formText: 'テキスト',
+    formTextPlaceholder: 'この場所について説明してください…',
+    formAuthor: '著者',
+    formAuthorPlaceholder: 'お名前',
+    formEmail: 'メールアドレス',
+    formEmailHint: 'お断りやご質問の際にご連絡できるように。',
+    formEmailPlaceholder: 'you@example.com',
+    formModerationNote: '提案された場所は地図に表示される前に審査されます。',
+    formSuccessMessage: '送信ありがとうございます。審査後、承認されれば地図に追加するか、ご連絡いたします。',
+    formErrorMessage: 'エラーが発生しました。buildtounderstand@gmail.com までご連絡ください。',
+    formGeo: '位置',
+    formGeoHint: 'ボタンをクリックしてから地図上をクリックし、ポイントを設定してください。',
+    formPickMap: '地図で選ぶ',
+    formPickHint: '地図をクリックしてポイントを設定してください。',
+    formCancel: 'キャンセル',
+    formSubmit: '送信',
+  },
+  ru: {
+    title: 'Сент-Этьен глазами художников',
+    openArticle: 'Открыть статью',
+    contact: 'Чтобы добавить любимое место в Сент-Этьене на карту, напишите нам на',
+    contactOr: '',
+    addPlaceBtn: 'Добавить моё любимое место на карту',
+    formTitle: 'Добавить место',
+    formImage: 'Изображение',
+    formPlaceTitle: 'Название статьи',
+    formPlaceTitlePlaceholder: 'Напр.: Place Jean Jaurès',
+    formImageReq: 'JPG или PNG, макс. 2 МБ, рекомендуемый размер 1200×800 px.',
+    formText: 'Текст',
+    formTextPlaceholder: 'Опишите это место…',
+    formAuthor: 'Автор',
+    formAuthorPlaceholder: 'Ваше имя',
+    formEmail: 'Email',
+    formEmailHint: 'Чтобы мы могли ответить при отказе или вопросах.',
+    formEmailPlaceholder: 'you@example.com',
+    formModerationNote: 'Предложенные места модерируются перед публикацией на карте.',
+    formSuccessMessage: 'Спасибо! Ваша заявка отправлена. После проверки мы добавим место на карту или свяжемся с вами.',
+    formErrorMessage: 'Произошла ошибка. Напишите нам на buildtounderstand@gmail.com.',
+    formGeo: 'Точка на карте',
+    formGeoHint: 'Нажмите кнопку, затем кликните по карте, чтобы указать точку.',
+    formPickMap: 'Выбрать на карте',
+    formPickHint: 'Кликните по карте, чтобы поставить точку.',
+    formCancel: 'Отмена',
+    formSubmit: 'Отправить',
+  },
 };
 
 const LANG_KEY = 'semap-lang';
@@ -202,6 +258,22 @@ const DEFAULT_LANG = 'fr';
 function getLang() {
   const stored = localStorage.getItem(LANG_KEY);
   return translations[stored] ? stored : DEFAULT_LANG;
+}
+
+function getMarkerTitle(marker) {
+  if (typeof marker.title === 'object' && marker.title !== null) {
+    const lang = getLang();
+    return marker.title[lang] || marker.title[DEFAULT_LANG] || marker.title.en || Object.values(marker.title)[0];
+  }
+  return marker.title || '';
+}
+
+function getMarkerExcerpt(marker) {
+  if (typeof marker.excerpt === 'object' && marker.excerpt !== null) {
+    const lang = getLang();
+    return marker.excerpt[lang] || marker.excerpt[DEFAULT_LANG] || marker.excerpt.en || Object.values(marker.excerpt)[0];
+  }
+  return marker.excerpt || '';
 }
 
 function setLang(lang) {
@@ -222,6 +294,10 @@ function applyLang(lang) {
   document.querySelectorAll('#lang-switcher button').forEach((btn) => {
     btn.classList.toggle('is-active', btn.getAttribute('data-lang') === lang);
   });
+  if (activeMarkerId) {
+    const marker = markersData.find((m) => m.id === activeMarkerId);
+    if (marker) openPopup(marker);
+  }
 }
 
 function applyFormLang(lang) {
@@ -259,15 +335,17 @@ function openPopup(marker) {
   const url = articleUrl(marker.slug);
   const imgSrc = imageUrl(marker.image);
   const openArticleText = translations[getLang()].openArticle;
+  const title = getMarkerTitle(marker);
+  const excerpt = getMarkerExcerpt(marker);
 
   popupEl.innerHTML = `
     <article class="popup-card" role="article">
-      <a href="${url}" class="popup-image-link" aria-label="${escapeHtml(openArticleText)}: ${escapeHtml(marker.title)}">
+      <a href="${url}" class="popup-image-link" aria-label="${escapeHtml(openArticleText)}: ${escapeHtml(title)}">
         <img src="${imgSrc}" alt="" class="popup-image" loading="lazy" />
       </a>
       <div class="popup-body">
-        <h2 class="popup-title">${escapeHtml(marker.title)}</h2>
-        <p class="popup-excerpt">${escapeHtml(marker.excerpt)}</p>
+        <h2 class="popup-title">${escapeHtml(title)}</h2>
+        <p class="popup-excerpt">${escapeHtml(excerpt)}</p>
         <a href="${url}" class="popup-cta">${escapeHtml(openArticleText)}</a>
       </div>
     </article>
@@ -293,7 +371,7 @@ function createMarkerElement(marker) {
   const el = document.createElement('button');
   el.type = 'button';
   el.className = 'map-marker';
-  el.setAttribute('aria-label', `Show: ${marker.title}`);
+  el.setAttribute('aria-label', `Show: ${getMarkerTitle(marker)}`);
   el.innerHTML = `
     <svg class="marker-icon" viewBox="0 0 24 36" aria-hidden="true">
       <path d="M12 0C5.4 0 0 5.4 0 12c0 9 12 24 12 24s12-15 12-24C24 5.4 18.6 0 12 0z"/>

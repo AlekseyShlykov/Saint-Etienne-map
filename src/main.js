@@ -62,6 +62,8 @@ const translations = {
     addPlaceBtn: 'Ajouter mon lieu préféré sur la carte',
     formTitle: 'Ajouter un lieu',
     formImage: 'Image',
+    formPlaceTitle: "Titre de l'article",
+    formPlaceTitlePlaceholder: 'Ex : Place Jean Jaurès',
     formImageReq: 'JPG ou PNG, max. 2 Mo, taille recommandée 1200×800 px.',
     formText: 'Texte',
     formTextPlaceholder: 'Décrivez ce lieu...',
@@ -88,6 +90,8 @@ const translations = {
     addPlaceBtn: 'Add my favourite place to the map',
     formTitle: 'Add a place',
     formImage: 'Image',
+    formPlaceTitle: 'Article title',
+    formPlaceTitlePlaceholder: 'e.g. Place Jean Jaurès',
     formImageReq: 'JPG or PNG, max. 2 MB, recommended size 1200×800 px.',
     formText: 'Text',
     formTextPlaceholder: 'Describe this place...',
@@ -98,7 +102,7 @@ const translations = {
     formEmailPlaceholder: 'you@example.com',
     formModerationNote: 'Suggested places are moderated before they appear on the map.',
     formSuccessMessage: 'Thank you! Your submission has been sent. It will be reviewed; we will add it to the map after approval or contact you with feedback.',
-    formErrorMessage: 'Something went wrong. You can email us at buildtounderstand@gmail.com.',
+    formErrorMessage: 'Something went wrong. Check your email (e.g. .com). You can email us at buildtounderstand@gmail.com.',
     formGeo: 'Location',
     formGeoHint: 'Click the button then click on the map to set the point.',
     formPickMap: 'Pick on map',
@@ -114,6 +118,8 @@ const translations = {
     addPlaceBtn: 'Meinen Lieblingsort auf die Karte setzen',
     formTitle: 'Ort hinzufügen',
     formImage: 'Bild',
+    formPlaceTitle: 'Titel des Artikels',
+    formPlaceTitlePlaceholder: 'z. B. Place Jean Jaurès',
     formImageReq: 'JPG oder PNG, max. 2 MB, empfohlene Größe 1200×800 px.',
     formText: 'Text',
     formTextPlaceholder: 'Beschreiben Sie diesen Ort...',
@@ -140,6 +146,8 @@ const translations = {
     addPlaceBtn: 'Añadir mi lugar favorito al mapa',
     formTitle: 'Añadir un lugar',
     formImage: 'Imagen',
+    formPlaceTitle: 'Título del artículo',
+    formPlaceTitlePlaceholder: 'Ej.: Place Jean Jaurès',
     formImageReq: 'JPG o PNG, máx. 2 MB, tamaño recomendado 1200×800 px.',
     formText: 'Texto',
     formTextPlaceholder: 'Describa este lugar...',
@@ -166,6 +174,8 @@ const translations = {
     addPlaceBtn: 'Aggiungi il mio luogo preferito sulla mappa',
     formTitle: 'Aggiungi un luogo',
     formImage: 'Immagine',
+    formPlaceTitle: 'Titolo dell\'articolo',
+    formPlaceTitlePlaceholder: 'Es.: Place Jean Jaurès',
     formImageReq: 'JPG o PNG, max 2 MB, dimensione consigliata 1200×800 px.',
     formText: 'Testo',
     formTextPlaceholder: 'Descrivi questo luogo...',
@@ -216,8 +226,8 @@ function applyLang(lang) {
 
 function applyFormLang(lang) {
   const t = translations[lang];
-  const ids = ['form-modal-title', 'form-label-image', 'form-image-requirements', 'form-label-text', 'form-label-author', 'form-label-email', 'form-email-hint', 'form-label-geo', 'form-geo-hint', 'form-pick-map-btn', 'form-cancel-btn', 'form-submit-btn', 'form-moderation-note', 'form-pick-hint-text', 'form-pick-cancel-btn'];
-  const keys = ['formTitle', 'formImage', 'formImageReq', 'formText', 'formAuthor', 'formEmail', 'formEmailHint', 'formGeo', 'formGeoHint', 'formPickMap', 'formCancel', 'formSubmit', 'formModerationNote', 'formPickHint', 'formCancel'];
+  const ids = ['form-modal-title', 'form-label-image', 'form-image-requirements', 'form-label-title', 'form-label-text', 'form-label-author', 'form-label-email', 'form-email-hint', 'form-label-geo', 'form-geo-hint', 'form-pick-map-btn', 'form-cancel-btn', 'form-submit-btn', 'form-moderation-note', 'form-pick-hint-text', 'form-pick-cancel-btn'];
+  const keys = ['formTitle', 'formImage', 'formImageReq', 'formPlaceTitle', 'formText', 'formAuthor', 'formEmail', 'formEmailHint', 'formGeo', 'formGeoHint', 'formPickMap', 'formCancel', 'formSubmit', 'formModerationNote', 'formPickHint', 'formCancel'];
   ids.forEach((id, i) => {
     const el = document.getElementById(id);
     if (el && t[keys[i]]) el.textContent = t[keys[i]];
@@ -225,9 +235,11 @@ function applyFormLang(lang) {
   const textEl = document.getElementById('form-text');
   const authorEl = document.getElementById('form-author');
   const emailEl = document.getElementById('form-email');
+  const titleEl = document.getElementById('form-title');
   if (textEl && t.formTextPlaceholder) textEl.placeholder = t.formTextPlaceholder;
   if (authorEl && t.formAuthorPlaceholder) authorEl.placeholder = t.formAuthorPlaceholder;
   if (emailEl && t.formEmailPlaceholder) emailEl.placeholder = t.formEmailPlaceholder;
+  if (titleEl && t.formPlaceTitlePlaceholder) titleEl.placeholder = t.formPlaceTitlePlaceholder;
 }
 
 function articleUrl(slug) {
@@ -443,6 +455,7 @@ function initFormModal() {
     const text = document.getElementById('form-text').value.trim();
     const author = document.getElementById('form-author').value.trim();
     const email = document.getElementById('form-email').value.trim();
+    const title = document.getElementById('form-title').value.trim();
     const lng = pickMapBtn?.dataset.lng;
     const lat = pickMapBtn?.dataset.lat;
     const imageInput = document.getElementById('form-image');
@@ -462,6 +475,7 @@ function initFormModal() {
       const data = new FormData();
       data.set('text', text || '(empty)');
       data.set('author', author || '(empty)');
+      data.set('title', title || '(empty)');
       data.set('email', email || '(not provided)');
       data.set('latitude', lat || '');
       data.set('longitude', lng || '');
@@ -469,6 +483,7 @@ function initFormModal() {
       data.set('_replyto', email || '');
       try {
         const res = await fetch('https://formspree.io/f/' + FORMSPREE_FORM_ID, { method: 'POST', body: data, headers: { Accept: 'application/json' } });
+        const j = res.ok ? null : await res.json().catch(() => ({}));
         if (res.ok) {
           const successEl = document.createElement('p');
           successEl.className = 'form-success-message';
@@ -482,14 +497,14 @@ function initFormModal() {
             submitBtn.textContent = prevSubmitText;
           }, 3500);
         } else {
-          throw new Error();
+          throw new Error(j?.error || j?.message || 'Bad request');
         }
       } catch (err) {
         submitBtn.disabled = false;
         submitBtn.textContent = prevSubmitText;
         let errEl = form.querySelector('.form-error-message');
         if (!errEl) { errEl = document.createElement('p'); errEl.className = 'form-error-message'; form.prepend(errEl); }
-        errEl.textContent = t.formErrorMessage || 'Something went wrong.';
+        errEl.textContent = (err && err.message && err.message !== 'Bad request' ? err.message + '. ' : '') + (t.formErrorMessage || 'Something went wrong.');
       }
       return;
     }
@@ -498,6 +513,7 @@ function initFormModal() {
     const body = [
       'Place submission',
       '',
+      'Title: ' + (title || '(empty)'),
       'Text: ' + (text || '(empty)'),
       'Author: ' + (author || '(empty)'),
       'Email: ' + (email || '(not provided)'),

@@ -1,0 +1,50 @@
+[
+  {
+    "id": "1",
+    "title": "Place Jean Jaurès",
+    "excerpt": "The main square of Saint-Étienne, a hub for markets and events in the heart of the city.",
+    "image": "place-jean-jaures.svg",
+    "coordinates": { "lng": 4.3872, "lat": 45.4397 },
+    "slug": "place-jean-jaures"
+  },
+  {
+    "id": "2",
+    "title": "Museum of Art and Industry",
+    "excerpt": "Discover ribbons, arms, and cycles that made Saint-Étienne famous across the world.",
+    "image": "musee-art-industrie.svg",
+    "coordinates": { "lng": 4.3891, "lat": 45.4472 },
+    "slug": "musee-art-industrie"
+  },
+  {
+    "id": "3",
+    "title": "Firminy-Vert",
+    "excerpt": "Le Corbusier's modernist ensemble: church, stadium, and housing unit in Firminy.",
+    "image": "firminy-vert.svg",
+    "coordinates": { "lng": 4.2876, "lat": 45.3834 },
+    "slug": "firminy-vert"
+  },
+  {
+    "id": "4",
+    "title": "Parc de l'Europe",
+    "excerpt": "A green lung in Saint-Étienne ideal for walking, jogging, and family picnics.",
+    "image": "parc-europe.svg",
+    "coordinates": { "lng": 4.3621, "lat": 45.4612 },
+    "slug": "parc-europe"
+  },
+  {
+    "id": "5",
+    "title": "Saint-Chamond Town Hall",
+    "excerpt": "Historic centre of Saint-Chamond with its emblematic belfry and pedestrian streets.",
+    "image": "saint-chamond.svg",
+    "coordinates": { "lng": 4.5142, "lat": 45.4756 },
+    "slug": "saint-chamond"
+  },
+  {
+    "id": "6",
+    "title": "Rive-de-Gier Canal",
+    "excerpt": "The Gier valley and its industrial heritage along the canal from Givors to Rive-de-Gier.",
+    "image": "rive-de-gier.svg",
+    "coordinates": { "lng": 4.6188, "lat": 45.5312 },
+    "slug": "rive-de-gier"
+  }
+]

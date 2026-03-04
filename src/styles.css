@@ -1,0 +1,248 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #1a1a1a;
+  -webkit-font-smoothing: antialiased;
+}
+
+#map {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.attribution-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+  justify-content: center;
+  align-items: center;
+  padding: 0.4rem 0.75rem;
+  background: rgba(255, 255, 255, 0.92);
+  font-size: 0.7rem;
+  color: #555;
+  box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.attribution-bar span {
+  white-space: nowrap;
+}
+
+/* Custom marker */
+.map-marker {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s ease;
+}
+
+.map-marker:hover {
+  transform: scale(1.15);
+}
+
+.marker-icon {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+}
+
+.marker-icon path {
+  fill: #c62828;
+}
+
+.marker-icon circle {
+  fill: #fff;
+}
+
+/* Popup overlay */
+.popup {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  padding-bottom: 3rem;
+  background: rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.popup.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.popup-card {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  max-width: 360px;
+  width: 100%;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+  animation: popupIn 0.25s ease;
+}
+
+@keyframes popupIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.popup-image-link {
+  display: block;
+  line-height: 0;
+  background: #eee;
+}
+
+.popup-image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  vertical-align: middle;
+}
+
+.popup-body {
+  padding: 1rem 1.25rem 1.25rem;
+}
+
+.popup-title {
+  margin: 0 0 0.5rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.popup-excerpt {
+  margin: 0 0 1rem;
+  font-size: 0.9rem;
+  color: #444;
+}
+
+.popup-cta {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background: #c62828;
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+}
+
+.popup-cta:hover {
+  background: #a01e1e;
+}
+
+/* Article page */
+.article-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.article-header {
+  padding: 1rem 1.25rem;
+  background: #fff;
+  border-bottom: 1px solid #eee;
+}
+
+.article-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: #c62828;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.article-back:hover {
+  text-decoration: underline;
+}
+
+.article-hero {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  background: #eee;
+  vertical-align: middle;
+}
+
+.article-content {
+  flex: 1;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 3rem;
+}
+
+.article-content h1 {
+  margin: 0 0 1rem;
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.article-content p {
+  margin: 0 0 1rem;
+  color: #333;
+}
+
+/* MapLibre attribution: keep compact */
+.maplibregl-ctrl-attrib {
+  font-size: 10px;
+}
+
+.maplibregl-ctrl-attrib a {
+  color: #555;
+}
+
+@media (max-width: 480px) {
+  .popup {
+    padding: 0.75rem;
+    padding-bottom: 2.75rem;
+  }
+
+  .popup-image {
+    height: 160px;
+  }
+
+  .popup-body {
+    padding: 1rem;
+  }
+
+  .popup-title {
+    font-size: 1.05rem;
+  }
+}

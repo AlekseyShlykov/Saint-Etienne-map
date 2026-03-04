@@ -121,6 +121,11 @@ html, body {
   padding: 0 1rem 0.5rem;
 }
 
+.footer-actions.is-hidden,
+.form-modal.is-hidden {
+  display: none !important;
+}
+
 .footer-add-btn {
   display: inline-block;
   padding: 0.5rem 1rem;

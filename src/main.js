@@ -57,8 +57,8 @@ const translations = {
   fr: {
     title: 'Saint-Étienne à travers les yeux des artistes',
     openArticle: "Ouvrir l'article",
-    contact: 'Pour ajouter un lieu à Saint-Étienne sur notre carte, écrivez-nous à',
-    contactOr: ' ou proposez-le vous-même en cliquant sur le bouton ci-dessous.',
+    contact: 'Pour ajouter votre lieu préféré à Saint-Étienne sur notre carte, écrivez-nous à',
+    contactOr: '',
     addPlaceBtn: 'Ajouter mon lieu préféré sur la carte',
     formTitle: 'Ajouter un lieu',
     formImage: 'Image',
@@ -85,8 +85,8 @@ const translations = {
   en: {
     title: 'Saint-Étienne through the eyes of artists',
     openArticle: 'Open article',
-    contact: 'To add a place in Saint-Étienne to our map, write to us at',
-    contactOr: ' or suggest it yourself by clicking the button below.',
+    contact: 'To add your favourite place in Saint-Étienne to our map, write to us at',
+    contactOr: '',
     addPlaceBtn: 'Add my favourite place to the map',
     formTitle: 'Add a place',
     formImage: 'Image',
@@ -113,8 +113,8 @@ const translations = {
   de: {
     title: 'Saint-Étienne durch die Augen von Künstlern',
     openArticle: 'Artikel öffnen',
-    contact: 'Um einen Ort in Saint-Étienne zu unserer Karte hinzuzufügen, schreiben Sie uns an',
-    contactOr: ' oder schlagen Sie ihn selbst vor, indem Sie auf die Schaltfläche unten klicken.',
+    contact: 'Um Ihren Lieblingsort in Saint-Étienne zu unserer Karte hinzuzufügen, schreiben Sie uns an',
+    contactOr: '',
     addPlaceBtn: 'Meinen Lieblingsort auf die Karte setzen',
     formTitle: 'Ort hinzufügen',
     formImage: 'Bild',
@@ -141,8 +141,8 @@ const translations = {
   es: {
     title: 'Saint-Étienne a través de los ojos de los artistas',
     openArticle: 'Abrir artículo',
-    contact: 'Para añadir un lugar en Saint-Étienne a nuestro mapa, escríbanos a',
-    contactOr: ' o propóngalo usted mismo haciendo clic en el botón de abajo.',
+    contact: 'Para añadir su lugar favorito en Saint-Étienne a nuestro mapa, escríbanos a',
+    contactOr: '',
     addPlaceBtn: 'Añadir mi lugar favorito al mapa',
     formTitle: 'Añadir un lugar',
     formImage: 'Imagen',
@@ -169,8 +169,8 @@ const translations = {
   it: {
     title: 'Saint-Étienne attraverso gli occhi degli artisti',
     openArticle: 'Apri articolo',
-    contact: 'Per aggiungere un luogo a Saint-Étienne sulla nostra mappa, scrivici a',
-    contactOr: ' oppure proporlo tu stesso cliccando sul pulsante qui sotto.',
+    contact: 'Per aggiungere il tuo luogo preferito a Saint-Étienne sulla nostra mappa, scrivici a',
+    contactOr: '',
     addPlaceBtn: 'Aggiungi il mio luogo preferito sulla mappa',
     formTitle: 'Aggiungi un luogo',
     formImage: 'Immagine',
@@ -479,7 +479,7 @@ function initFormModal() {
       data.set('email', email || '(not provided)');
       data.set('latitude', lat || '');
       data.set('longitude', lng || '');
-      if (imageInput?.files?.[0]) data.set('image', imageInput.files[0]);
+      data.set('image_filename', imageInput?.files?.[0]?.name || '(no file)');
       data.set('_replyto', email || '');
       try {
         const res = await fetch('https://formspree.io/f/' + FORMSPREE_FORM_ID, { method: 'POST', body: data, headers: { Accept: 'application/json' } });
@@ -487,7 +487,8 @@ function initFormModal() {
         if (res.ok) {
           const successEl = document.createElement('p');
           successEl.className = 'form-success-message';
-          successEl.textContent = t.formSuccessMessage || 'Thank you!';
+          const hasFile = imageInput?.files?.[0];
+          successEl.textContent = (t.formSuccessMessage || 'Thank you!') + (hasFile ? ' Please send your image to buildtounderstand@gmail.com.' : '');
           form.prepend(successEl);
           setTimeout(() => {
             successEl.remove();

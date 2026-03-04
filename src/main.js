@@ -374,6 +374,7 @@ function initFormModal() {
   const pickMapBtn = document.getElementById('form-pick-map-btn');
   const geoValueEl = document.getElementById('form-geo-value');
 
+  openBtn?.addEventListener('click', () => openFormModal());
   backdrop?.addEventListener('click', () => closeFormModal());
   cancelBtn?.addEventListener('click', () => closeFormModal());
   document.querySelector('.form-modal-box')?.addEventListener('click', (e) => e.stopPropagation());

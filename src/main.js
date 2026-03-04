@@ -20,7 +20,7 @@ const INITIAL_ZOOM = 11.5;
 const DEMO_STYLE = 'https://demotiles.maplibre.org/style.json';
 
 const styleUrl = useMapTiler
-  ? `https://api.maptiler.com/maps/bright/style.json?key=${MAPTILER_KEY}`
+  ? `https://api.maptiler.com/maps/toner-v2/style.json?key=${MAPTILER_KEY}`
   : DEMO_STYLE;
 
 const map = new maplibregl.Map({

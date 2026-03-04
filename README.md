@@ -1,6 +1,6 @@
 # SEmap — Saint-Étienne Map
 
-A static full-screen map of the Saint-Étienne area with clickable markers and article previews. Built with Vite (vanilla JS), MapLibre GL JS, and MapTiler Bright basemap. Hosted on GitHub Pages.
+A static full-screen map of the Saint-Étienne area with clickable markers and article previews. Built with Vite (vanilla JS), MapLibre GL JS, and MapTiler Toner basemap. Hosted on GitHub Pages.
 
 ## Features1
 
@@ -15,7 +15,7 @@ A static full-screen map of the Saint-Étienne area with clickable markers and a
 
 - **Vite** (vanilla JS + HTML + CSS), static build only.
 - **MapLibre GL JS** for the map.
-- **MapTiler** Bright style (requires API key for production).
+- **MapTiler** Toner style (requires API key for production).
 
 ## Local development
 
@@ -41,7 +41,7 @@ A static full-screen map of the Saint-Étienne area with clickable markers and a
    VITE_MAPTILER_KEY=your_maptiler_key_here
    ```
 
-   Get a free key at [MapTiler Cloud](https://cloud.maptiler.com/). Without it, the app uses a demo style (no MapTiler Bright).
+   Get a free key at [MapTiler Cloud](https://cloud.maptiler.com/). Without it, the app uses a demo style (no MapTiler Toner).
 
 3. **Run dev server**
 
@@ -76,7 +76,7 @@ The workflow (`.github/workflows/deploy.yml`) will:
 - Set `BASE_PATH=/<REPO_NAME>/` so the site works under `https://username.github.io/<repo>/`.
 - Deploy the `dist` folder to GitHub Pages using `actions/deploy-pages`.
 
-**Optional:** To use the MapTiler Bright style in production, add a repository secret:
+**Optional:** To use the MapTiler Toner style in production, add a repository secret:
 
 - **Settings → Secrets and variables → Actions**
 - New repository secret: `VITE_MAPTILER_KEY` = your MapTiler API key.

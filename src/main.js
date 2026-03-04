@@ -2,9 +2,11 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 import './styles.css';
 import maplibregl from 'maplibre-gl';
 import markersData from './data/markers.json';
+import { MAPTILER_KEY as CONFIG_KEY } from './config.js';
 
 const BASE = import.meta.env.BASE_URL;
-const MAPTILER_KEY = import.meta.env.VITE_MAPTILER_KEY || '';
+const MAPTILER_KEY = (import.meta.env.VITE_MAPTILER_KEY || CONFIG_KEY || '').trim();
+const useMapTiler = MAPTILER_KEY && MAPTILER_KEY !== 'undefined';
 
 const CENTER = [4.3872, 45.4397];
 const BOUNDS = [
@@ -15,9 +17,11 @@ const MIN_ZOOM = 9;
 const MAX_ZOOM = 17;
 const INITIAL_ZOOM = 11.5;
 
-const styleUrl = MAPTILER_KEY
+const DEMO_STYLE = 'https://demotiles.maplibre.org/style.json';
+
+const styleUrl = useMapTiler
   ? `https://api.maptiler.com/maps/bright/style.json?key=${MAPTILER_KEY}`
-  : 'https://demotiles.maplibre.org/style.json';
+  : DEMO_STYLE;
 
 const map = new maplibregl.Map({
   container: 'map',
@@ -29,6 +33,17 @@ const map = new maplibregl.Map({
   maxBounds: BOUNDS,
   attributionControl: true,
 });
+
+let styleErrorHandled = false;
+map.on('error', (e) => {
+  if (styleErrorHandled) return;
+  const msg = e?.error?.message || '';
+  if (/style|401|403|key|tile/.test(msg)) {
+    styleErrorHandled = true;
+    map.setStyle(DEMO_STYLE);
+  }
+});
+map.on('style.load', () => { styleErrorHandled = true; });
 
 map.addControl(new maplibregl.NavigationControl(), 'top-right');
 

@@ -75,6 +75,7 @@ const translations = {
     formGeo: 'Géo-point',
     formGeoHint: 'Cliquez sur le bouton puis sur la carte pour placer le point.',
     formPickMap: 'Choisir sur la carte',
+    formPickHint: 'Cliquez sur la carte pour placer le point.',
     formCancel: 'Annuler',
     formSubmit: 'Envoyer',
   },
@@ -99,6 +100,7 @@ const translations = {
     formGeo: 'Location',
     formGeoHint: 'Click the button then click on the map to set the point.',
     formPickMap: 'Pick on map',
+    formPickHint: 'Click on the map to place the point.',
     formCancel: 'Cancel',
     formSubmit: 'Submit',
   },
@@ -123,6 +125,7 @@ const translations = {
     formGeo: 'Standort',
     formGeoHint: 'Klicken Sie auf den Button und dann auf die Karte, um den Punkt zu setzen.',
     formPickMap: 'Auf Karte wählen',
+    formPickHint: 'Klicken Sie auf die Karte, um den Punkt zu setzen.',
     formCancel: 'Abbrechen',
     formSubmit: 'Senden',
   },
@@ -147,6 +150,7 @@ const translations = {
     formGeo: 'Ubicación',
     formGeoHint: 'Pulse el botón y luego en el mapa para colocar el punto.',
     formPickMap: 'Elegir en el mapa',
+    formPickHint: 'Haga clic en el mapa para colocar el punto.',
     formCancel: 'Cancelar',
     formSubmit: 'Enviar',
   },
@@ -171,6 +175,7 @@ const translations = {
     formGeo: 'Punto sulla mappa',
     formGeoHint: 'Clicca il pulsante e poi sulla mappa per impostare il punto.',
     formPickMap: 'Scegli sulla mappa',
+    formPickHint: 'Clicca sulla mappa per impostare il punto.',
     formCancel: 'Annulla',
     formSubmit: 'Invia',
   },
@@ -206,8 +211,8 @@ function applyLang(lang) {
 
 function applyFormLang(lang) {
   const t = translations[lang];
-  const ids = ['form-modal-title', 'form-label-image', 'form-image-requirements', 'form-label-text', 'form-label-author', 'form-label-email', 'form-email-hint', 'form-label-geo', 'form-geo-hint', 'form-pick-map-btn', 'form-cancel-btn', 'form-submit-btn', 'form-moderation-note'];
-  const keys = ['formTitle', 'formImage', 'formImageReq', 'formText', 'formAuthor', 'formEmail', 'formEmailHint', 'formGeo', 'formGeoHint', 'formPickMap', 'formCancel', 'formSubmit', 'formModerationNote'];
+  const ids = ['form-modal-title', 'form-label-image', 'form-image-requirements', 'form-label-text', 'form-label-author', 'form-label-email', 'form-email-hint', 'form-label-geo', 'form-geo-hint', 'form-pick-map-btn', 'form-cancel-btn', 'form-submit-btn', 'form-moderation-note', 'form-pick-hint-text', 'form-pick-cancel-btn'];
+  const keys = ['formTitle', 'formImage', 'formImageReq', 'formText', 'formAuthor', 'formEmail', 'formEmailHint', 'formGeo', 'formGeoHint', 'formPickMap', 'formCancel', 'formSubmit', 'formModerationNote', 'formPickHint', 'formCancel'];
   ids.forEach((id, i) => {
     const el = document.getElementById(id);
     if (el && t[keys[i]]) el.textContent = t[keys[i]];
@@ -357,7 +362,11 @@ function closeFormModal() {
   if (!modal || !btn) return;
   modal.setAttribute('aria-hidden', 'true');
   modal.classList.remove('is-open');
+  modal.classList.remove('is-picking');
   btn.setAttribute('aria-expanded', 'false');
+  document.getElementById('add-place-form')?.classList.remove('is-hidden');
+  const ph = document.getElementById('form-pick-hint');
+  if (ph) { ph.setAttribute('aria-hidden', 'true'); ph.classList.remove('is-visible'); }
   if (geoPickMode) {
     geoPickMode = false;
     geoPickResolve = null;
@@ -382,12 +391,20 @@ function initFormModal() {
   pickMapBtn?.addEventListener('click', () => {
     if (geoPickMode) return;
     geoPickMode = true;
+    document.getElementById('form-modal')?.classList.add('is-picking');
+    document.getElementById('add-place-form')?.classList.add('is-hidden');
+    const pickHint = document.getElementById('form-pick-hint');
+    if (pickHint) { pickHint.setAttribute('aria-hidden', 'false'); pickHint.classList.add('is-visible'); }
     pickMapBtn.classList.add('is-picking');
     const t = translations[getLang()];
     geoValueEl.textContent = '… ' + (t.formPickMap || '') + ' …';
     const resolve = ({ lng, lat }) => {
       geoValueEl.textContent = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
       pickMapBtn.classList.remove('is-picking');
+      document.getElementById('form-modal')?.classList.remove('is-picking');
+      document.getElementById('add-place-form')?.classList.remove('is-hidden');
+      const ph = document.getElementById('form-pick-hint');
+      if (ph) { ph.setAttribute('aria-hidden', 'true'); ph.classList.remove('is-visible'); }
       pickMapBtn.dataset.lng = String(lng);
       pickMapBtn.dataset.lat = String(lat);
       if (tempMarker) tempMarker.remove();
@@ -398,6 +415,22 @@ function initFormModal() {
     };
     geoPickResolve = resolve;
   });
+
+  const pickCancelBtn = document.getElementById('form-pick-cancel-btn');
+  if (pickCancelBtn) {
+    pickCancelBtn.addEventListener('click', () => {
+      if (!geoPickMode) return;
+      geoPickMode = false;
+      geoPickResolve = null;
+      document.getElementById('form-modal')?.classList.remove('is-picking');
+      document.getElementById('add-place-form')?.classList.remove('is-hidden');
+      const ph = document.getElementById('form-pick-hint');
+      if (ph) { ph.setAttribute('aria-hidden', 'true'); ph.classList.remove('is-visible'); }
+      pickMapBtn?.classList.remove('is-picking');
+      if (geoValueEl) geoValueEl.textContent = '—';
+      if (tempMarker) { tempMarker.remove(); tempMarker = null; }
+    });
+  }
 
   form?.addEventListener('submit', async (e) => {
     e.preventDefault();

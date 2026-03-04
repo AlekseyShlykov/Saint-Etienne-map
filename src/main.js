@@ -57,7 +57,8 @@ const translations = {
   fr: {
     title: 'Saint-Étienne à travers les yeux des artistes',
     openArticle: "Ouvrir l'article",
-    contact: 'Si vous souhaitez ajouter votre lieu préféré à Saint-Étienne sur notre carte — écrivez-nous à',
+    contact: 'Pour ajouter un lieu à Saint-Étienne sur notre carte, écrivez-nous à',
+    contactOr: ' ou proposez-le vous-même en cliquant sur le bouton ci-dessous.',
     addPlaceBtn: 'Ajouter mon lieu préféré sur la carte',
     formTitle: 'Ajouter un lieu',
     formImage: 'Image',
@@ -82,7 +83,8 @@ const translations = {
   en: {
     title: 'Saint-Étienne through the eyes of artists',
     openArticle: 'Open article',
-    contact: 'If you would like to add your favourite place in Saint-Étienne to our map — write to us at',
+    contact: 'To add a place in Saint-Étienne to our map, write to us at',
+    contactOr: ' or suggest it yourself by clicking the button below.',
     addPlaceBtn: 'Add my favourite place to the map',
     formTitle: 'Add a place',
     formImage: 'Image',
@@ -107,7 +109,8 @@ const translations = {
   de: {
     title: 'Saint-Étienne durch die Augen von Künstlern',
     openArticle: 'Artikel öffnen',
-    contact: 'Wenn Sie Ihren Lieblingsort in Saint-Étienne zu unserer Karte hinzufügen möchten — schreiben Sie uns an',
+    contact: 'Um einen Ort in Saint-Étienne zu unserer Karte hinzuzufügen, schreiben Sie uns an',
+    contactOr: ' oder schlagen Sie ihn selbst vor, indem Sie auf die Schaltfläche unten klicken.',
     addPlaceBtn: 'Meinen Lieblingsort auf die Karte setzen',
     formTitle: 'Ort hinzufügen',
     formImage: 'Bild',
@@ -132,7 +135,8 @@ const translations = {
   es: {
     title: 'Saint-Étienne a través de los ojos de los artistas',
     openArticle: 'Abrir artículo',
-    contact: 'Si desea añadir su lugar favorito en Saint-Étienne a nuestro mapa — escríbanos a',
+    contact: 'Para añadir un lugar en Saint-Étienne a nuestro mapa, escríbanos a',
+    contactOr: ' o propóngalo usted mismo haciendo clic en el botón de abajo.',
     addPlaceBtn: 'Añadir mi lugar favorito al mapa',
     formTitle: 'Añadir un lugar',
     formImage: 'Imagen',
@@ -157,7 +161,8 @@ const translations = {
   it: {
     title: 'Saint-Étienne attraverso gli occhi degli artisti',
     openArticle: 'Apri articolo',
-    contact: 'Se vuoi aggiungere il tuo luogo preferito a Saint-Étienne sulla nostra mappa — scrivici a',
+    contact: 'Per aggiungere un luogo a Saint-Étienne sulla nostra mappa, scrivici a',
+    contactOr: ' oppure proporlo tu stesso cliccando sul pulsante qui sotto.',
     addPlaceBtn: 'Aggiungi il mio luogo preferito sulla mappa',
     formTitle: 'Aggiungi un luogo',
     formImage: 'Immagine',
@@ -200,7 +205,7 @@ function applyLang(lang) {
   const addBtnEl = document.getElementById('footer-add-btn');
   if (titleEl) titleEl.textContent = t.title;
   if (contactEl) {
-    contactEl.innerHTML = `${t.contact} <a href="mailto:buildtounderstand@gmail.com">buildtounderstand@gmail.com</a>`;
+    contactEl.innerHTML = t.contact + ' <a href="mailto:buildtounderstand@gmail.com">buildtounderstand@gmail.com</a>' + (t.contactOr || '');
   }
   if (addBtnEl) addBtnEl.textContent = t.addPlaceBtn;
   applyFormLang(lang);

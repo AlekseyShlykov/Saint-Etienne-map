@@ -169,6 +169,14 @@ html, body {
   opacity: 0.4;
 }
 
+.form-modal.is-picking {
+  pointer-events: none;
+}
+
+.form-modal.is-picking .form-modal-box {
+  pointer-events: auto;
+}
+
 .form-modal-box {
   position: relative;
   width: 100%;

@@ -20,11 +20,53 @@
     <div id="popup" class="popup" aria-hidden="true"></div>
     <footer class="footer-bar">
       <p class="footer-contact" id="footer-contact">Si vous souhaitez ajouter votre lieu préféré à Saint-Étienne sur notre carte — écrivez-nous à <a href="mailto:buildtounderstand@gmail.com">buildtounderstand@gmail.com</a></p>
+      <div class="footer-actions">
+        <button type="button" class="footer-add-btn" id="footer-add-btn" aria-haspopup="dialog" aria-expanded="false">Ajouter mon lieu préféré sur la carte</button>
+      </div>
       <div class="attribution-bar">
         <span>© OpenStreetMap contributors</span>
         <span>Map style/tiles © MapTiler</span>
       </div>
     </footer>
+    <div class="form-modal" id="form-modal" role="dialog" aria-modal="true" aria-labelledby="form-modal-title" aria-hidden="true">
+      <div class="form-modal-backdrop" id="form-modal-backdrop"></div>
+      <div class="form-modal-box">
+        <h2 class="form-modal-title" id="form-modal-title">Ajouter un lieu</h2>
+        <form id="add-place-form" class="add-place-form">
+          <div class="form-group">
+            <label for="form-image" id="form-label-image">Image</label>
+            <p class="form-hint" id="form-image-requirements">JPG ou PNG, max. 2 Mo, taille recommandée 1200×800 px.</p>
+            <input type="file" id="form-image" name="image" accept="image/jpeg,image/png,image/webp" />
+          </div>
+          <div class="form-group">
+            <label for="form-text" id="form-label-text">Texte</label>
+            <textarea id="form-text" name="text" rows="5" placeholder="Décrivez ce lieu..."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="form-author" id="form-label-author">Auteur</label>
+            <input type="text" id="form-author" name="author" placeholder="Votre nom" />
+          </div>
+          <div class="form-group">
+            <label for="form-email" id="form-label-email">Votre e-mail</label>
+            <p class="form-hint" id="form-email-hint">Pour que nous puissions vous répondre en cas de refus.</p>
+            <input type="email" id="form-email" name="email" placeholder="vous@exemple.fr" />
+          </div>
+          <div class="form-group">
+            <span class="form-label" id="form-label-geo">Géo-point</span>
+            <p class="form-hint" id="form-geo-hint">Cliquez sur le bouton puis sur la carte pour placer le point.</p>
+            <div class="form-geo-row">
+              <button type="button" class="form-pick-map-btn" id="form-pick-map-btn">Choisir sur la carte</button>
+              <span class="form-geo-value" id="form-geo-value">—</span>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="form-cancel-btn" id="form-cancel-btn">Annuler</button>
+            <button type="submit" class="form-submit-btn" id="form-submit-btn">Envoyer</button>
+          </div>
+          <p class="form-moderation-note" id="form-moderation-note">Les lieux proposés sont modérés avant d'apparaître sur la carte.</p>
+        </form>
+      </div>
+    </div>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>

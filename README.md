@@ -130,6 +130,14 @@ SEmap/
 - Article pages use relative links: `../` for “Back to map” and `../images/...` for assets, so they work for any base path.
 - In `vite.config.js`, `base` is `process.env.BASE_PATH || '/'`. The Actions workflow sets `BASE_PATH=/${{ github.event.repository.name }}/`.
 
+## Moderation (Add place form)
+
+New place submissions are not added to the map automatically. They are stored and sent to buildtounderstand@gmail.com for moderation.
+
+**Formspree (recommended):** Create a form at [formspree.io](https://formspree.io/) with email buildtounderstand@gmail.com. Set `VITE_FORMSPREE_FORM_ID` in `.env` (local) or as a GitHub Actions secret. Submissions are stored in the Formspree dashboard and emailed to you. Approve by adding the place to `markers.json` and creating the article page, then deploy. Reject by replying to the submitter's email with your comments.
+
+If the Formspree ID is not set, the form uses mailto so the user sends the data from their email client to buildtounderstand@gmail.com.
+
 ## License
 
 MIT.

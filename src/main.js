@@ -2,7 +2,7 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 import './styles.css';
 import maplibregl from 'maplibre-gl';
 import markersData from './data/markers.json';
-import { MAPTILER_KEY as CONFIG_KEY } from './config.js';
+import { MAPTILER_KEY as CONFIG_KEY, FORMSPREE_FORM_ID } from './config.js';
 
 const BASE = import.meta.env.BASE_URL;
 const MAPTILER_KEY = (import.meta.env.VITE_MAPTILER_KEY || CONFIG_KEY || '').trim();
@@ -49,32 +49,130 @@ map.addControl(new maplibregl.NavigationControl(), 'top-right');
 
 const popupEl = document.getElementById('popup');
 let activeMarkerId = null;
+let geoPickMode = false;
+let geoPickResolve = null;
+let tempMarker = null;
 
 const translations = {
   fr: {
     title: 'Saint-Étienne à travers les yeux des artistes',
     openArticle: "Ouvrir l'article",
     contact: 'Si vous souhaitez ajouter votre lieu préféré à Saint-Étienne sur notre carte — écrivez-nous à',
+    addPlaceBtn: 'Ajouter mon lieu préféré sur la carte',
+    formTitle: 'Ajouter un lieu',
+    formImage: 'Image',
+    formImageReq: 'JPG ou PNG, max. 2 Mo, taille recommandée 1200×800 px.',
+    formText: 'Texte',
+    formTextPlaceholder: 'Décrivez ce lieu...',
+    formAuthor: 'Auteur',
+    formAuthorPlaceholder: 'Votre nom',
+    formEmail: 'Votre e-mail',
+    formEmailHint: 'Pour que nous puissions vous répondre en cas de refus.',
+    formEmailPlaceholder: 'vous@exemple.fr',
+    formModerationNote: 'Les lieux proposés sont modérés avant d’apparaître sur la carte.',
+    formSuccessMessage: 'Merci ! Votre proposition a bien été envoyée. Elle sera modérée ; nous l’ajouterons à la carte après validation ou vous contacterons en cas de question.',
+    formErrorMessage: 'Une erreur s’est produite. Vous pouvez nous écrire à buildtounderstand@gmail.com.',
+    formGeo: 'Géo-point',
+    formGeoHint: 'Cliquez sur le bouton puis sur la carte pour placer le point.',
+    formPickMap: 'Choisir sur la carte',
+    formCancel: 'Annuler',
+    formSubmit: 'Envoyer',
   },
   en: {
     title: 'Saint-Étienne through the eyes of artists',
     openArticle: 'Open article',
     contact: 'If you would like to add your favourite place in Saint-Étienne to our map — write to us at',
+    addPlaceBtn: 'Add my favourite place to the map',
+    formTitle: 'Add a place',
+    formImage: 'Image',
+    formImageReq: 'JPG or PNG, max. 2 MB, recommended size 1200×800 px.',
+    formText: 'Text',
+    formTextPlaceholder: 'Describe this place...',
+    formAuthor: 'Author',
+    formAuthorPlaceholder: 'Your name',
+    formEmail: 'Your email',
+    formEmailHint: 'So we can reply to you if we have to decline or have questions.',
+    formEmailPlaceholder: 'you@example.com',
+    formModerationNote: 'Suggested places are moderated before they appear on the map.',
+    formSuccessMessage: 'Thank you! Your submission has been sent. It will be reviewed; we will add it to the map after approval or contact you with feedback.',
+    formErrorMessage: 'Something went wrong. You can email us at buildtounderstand@gmail.com.',
+    formGeo: 'Location',
+    formGeoHint: 'Click the button then click on the map to set the point.',
+    formPickMap: 'Pick on map',
+    formCancel: 'Cancel',
+    formSubmit: 'Submit',
   },
   de: {
     title: 'Saint-Étienne durch die Augen von Künstlern',
     openArticle: 'Artikel öffnen',
     contact: 'Wenn Sie Ihren Lieblingsort in Saint-Étienne zu unserer Karte hinzufügen möchten — schreiben Sie uns an',
+    addPlaceBtn: 'Meinen Lieblingsort auf die Karte setzen',
+    formTitle: 'Ort hinzufügen',
+    formImage: 'Bild',
+    formImageReq: 'JPG oder PNG, max. 2 MB, empfohlene Größe 1200×800 px.',
+    formText: 'Text',
+    formTextPlaceholder: 'Beschreiben Sie diesen Ort...',
+    formAuthor: 'Autor',
+    formAuthorPlaceholder: 'Ihr Name',
+    formEmail: 'Ihre E-Mail',
+    formEmailHint: 'Damit wir Ihnen bei Ablehnung oder Rückfragen antworten können.',
+    formEmailPlaceholder: 'sie@beispiel.de',
+    formModerationNote: 'Vorgeschlagene Orte werden vor der Veröffentlichung auf der Karte geprüft.',
+    formSuccessMessage: 'Vielen Dank! Ihre Einsendung wurde gesendet. Sie wird geprüft; wir nehmen den Ort nach Freigabe in die Karte auf oder melden uns bei Ihnen.',
+    formErrorMessage: 'Ein Fehler ist aufgetreten. Sie können uns unter buildtounderstand@gmail.com schreiben.',
+    formGeo: 'Standort',
+    formGeoHint: 'Klicken Sie auf den Button und dann auf die Karte, um den Punkt zu setzen.',
+    formPickMap: 'Auf Karte wählen',
+    formCancel: 'Abbrechen',
+    formSubmit: 'Senden',
   },
   es: {
     title: 'Saint-Étienne a través de los ojos de los artistas',
     openArticle: 'Abrir artículo',
     contact: 'Si desea añadir su lugar favorito en Saint-Étienne a nuestro mapa — escríbanos a',
+    addPlaceBtn: 'Añadir mi lugar favorito al mapa',
+    formTitle: 'Añadir un lugar',
+    formImage: 'Imagen',
+    formImageReq: 'JPG o PNG, máx. 2 MB, tamaño recomendado 1200×800 px.',
+    formText: 'Texto',
+    formTextPlaceholder: 'Describa este lugar...',
+    formAuthor: 'Autor',
+    formAuthorPlaceholder: 'Su nombre',
+    formEmail: 'Su correo electrónico',
+    formEmailHint: 'Para poder responderle en caso de rechazo o consulta.',
+    formEmailPlaceholder: 'usted@ejemplo.com',
+    formModerationNote: 'Los lugares propuestos se moderan antes de aparecer en el mapa.',
+    formSuccessMessage: '¡Gracias! Su propuesta ha sido enviada. Será revisada; la añadiremos al mapa tras la aprobación o le contactaremos.',
+    formErrorMessage: 'Ha ocurrido un error. Puede escribirnos a buildtounderstand@gmail.com.',
+    formGeo: 'Ubicación',
+    formGeoHint: 'Pulse el botón y luego en el mapa para colocar el punto.',
+    formPickMap: 'Elegir en el mapa',
+    formCancel: 'Cancelar',
+    formSubmit: 'Enviar',
   },
   it: {
     title: 'Saint-Étienne attraverso gli occhi degli artisti',
     openArticle: 'Apri articolo',
     contact: 'Se vuoi aggiungere il tuo luogo preferito a Saint-Étienne sulla nostra mappa — scrivici a',
+    addPlaceBtn: 'Aggiungi il mio luogo preferito sulla mappa',
+    formTitle: 'Aggiungi un luogo',
+    formImage: 'Immagine',
+    formImageReq: 'JPG o PNG, max 2 MB, dimensione consigliata 1200×800 px.',
+    formText: 'Testo',
+    formTextPlaceholder: 'Descrivi questo luogo...',
+    formAuthor: 'Autore',
+    formAuthorPlaceholder: 'Il tuo nome',
+    formEmail: 'La tua email',
+    formEmailHint: 'Per poterti rispondere in caso di rifiuto o domande.',
+    formEmailPlaceholder: 'tuo@esempio.it',
+    formModerationNote: 'I luoghi proposti sono moderati prima di apparire sulla mappa.',
+    formSuccessMessage: 'Grazie! La tua proposta è stata inviata. Sarà esaminata; la aggiungeremo alla mappa dopo l’approvazione o ti contatteremo.',
+    formErrorMessage: 'Si è verificato un errore. Puoi scriverci a buildtounderstand@gmail.com.',
+    formGeo: 'Punto sulla mappa',
+    formGeoHint: 'Clicca il pulsante e poi sulla mappa per impostare il punto.',
+    formPickMap: 'Scegli sulla mappa',
+    formCancel: 'Annulla',
+    formSubmit: 'Invia',
   },
 };
 
@@ -94,13 +192,32 @@ function applyLang(lang) {
   const t = translations[lang];
   const titleEl = document.getElementById('map-title');
   const contactEl = document.getElementById('footer-contact');
+  const addBtnEl = document.getElementById('footer-add-btn');
   if (titleEl) titleEl.textContent = t.title;
   if (contactEl) {
     contactEl.innerHTML = `${t.contact} <a href="mailto:buildtounderstand@gmail.com">buildtounderstand@gmail.com</a>`;
   }
+  if (addBtnEl) addBtnEl.textContent = t.addPlaceBtn;
+  applyFormLang(lang);
   document.querySelectorAll('#lang-switcher button').forEach((btn) => {
     btn.classList.toggle('is-active', btn.getAttribute('data-lang') === lang);
   });
+}
+
+function applyFormLang(lang) {
+  const t = translations[lang];
+  const ids = ['form-modal-title', 'form-label-image', 'form-image-requirements', 'form-label-text', 'form-label-author', 'form-label-email', 'form-email-hint', 'form-label-geo', 'form-geo-hint', 'form-pick-map-btn', 'form-cancel-btn', 'form-submit-btn', 'form-moderation-note'];
+  const keys = ['formTitle', 'formImage', 'formImageReq', 'formText', 'formAuthor', 'formEmail', 'formEmailHint', 'formGeo', 'formGeoHint', 'formPickMap', 'formCancel', 'formSubmit', 'formModerationNote'];
+  ids.forEach((id, i) => {
+    const el = document.getElementById(id);
+    if (el && t[keys[i]]) el.textContent = t[keys[i]];
+  });
+  const textEl = document.getElementById('form-text');
+  const authorEl = document.getElementById('form-author');
+  const emailEl = document.getElementById('form-email');
+  if (textEl && t.formTextPlaceholder) textEl.placeholder = t.formTextPlaceholder;
+  if (authorEl && t.formAuthorPlaceholder) authorEl.placeholder = t.formAuthorPlaceholder;
+  if (emailEl && t.formEmailPlaceholder) emailEl.placeholder = t.formEmailPlaceholder;
 }
 
 function articleUrl(slug) {
@@ -186,7 +303,20 @@ document.getElementById('lang-switcher').addEventListener('click', (e) => {
   applyLang(lang);
 });
 
-map.on('click', () => closePopup());
+map.on('click', (e) => {
+  if (geoPickMode && geoPickResolve) {
+    const { lng, lat } = e.lngLat;
+    geoPickResolve({ lng, lat });
+    geoPickResolve = null;
+    geoPickMode = false;
+    if (tempMarker) {
+      tempMarker.remove();
+      tempMarker = null;
+    }
+    return;
+  }
+  closePopup();
+});
 
 popupEl.addEventListener('click', (e) => {
   if (e.target.closest('.popup-card a')) return;
@@ -194,5 +324,154 @@ popupEl.addEventListener('click', (e) => {
 });
 
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') closePopup();
+  if (e.key === 'Escape') {
+    const formOpen = document.getElementById('form-modal')?.classList.contains('is-open');
+    if (formOpen) {
+      if (geoPickMode) {
+        geoPickMode = false;
+        geoPickResolve = null;
+        if (tempMarker) { tempMarker.remove(); tempMarker = null; }
+        document.getElementById('form-pick-map-btn')?.classList.remove('is-picking');
+      }
+      closeFormModal();
+    } else {
+      closePopup();
+    }
+  }
 });
+
+function openFormModal() {
+  const modal = document.getElementById('form-modal');
+  const btn = document.getElementById('footer-add-btn');
+  if (!modal || !btn) return;
+  modal.setAttribute('aria-hidden', 'false');
+  modal.classList.add('is-open');
+  btn.setAttribute('aria-expanded', 'true');
+  document.querySelectorAll('.form-success-message, .form-error-message').forEach((el) => el.remove());
+  applyFormLang(getLang());
+}
+
+function closeFormModal() {
+  const modal = document.getElementById('form-modal');
+  const btn = document.getElementById('footer-add-btn');
+  if (!modal || !btn) return;
+  modal.setAttribute('aria-hidden', 'true');
+  modal.classList.remove('is-open');
+  btn.setAttribute('aria-expanded', 'false');
+  if (geoPickMode) {
+    geoPickMode = false;
+    geoPickResolve = null;
+    if (tempMarker) { tempMarker.remove(); tempMarker = null; }
+    document.getElementById('form-pick-map-btn')?.classList.remove('is-picking');
+  }
+}
+
+function initFormModal() {
+  const openBtn = document.getElementById('footer-add-btn');
+  const backdrop = document.getElementById('form-modal-backdrop');
+  const cancelBtn = document.getElementById('form-cancel-btn');
+  const form = document.getElementById('add-place-form');
+  const pickMapBtn = document.getElementById('form-pick-map-btn');
+  const geoValueEl = document.getElementById('form-geo-value');
+
+  backdrop?.addEventListener('click', () => closeFormModal());
+  cancelBtn?.addEventListener('click', () => closeFormModal());
+  document.querySelector('.form-modal-box')?.addEventListener('click', (e) => e.stopPropagation());
+
+  pickMapBtn?.addEventListener('click', () => {
+    if (geoPickMode) return;
+    geoPickMode = true;
+    pickMapBtn.classList.add('is-picking');
+    const t = translations[getLang()];
+    geoValueEl.textContent = '… ' + (t.formPickMap || '') + ' …';
+    const resolve = ({ lng, lat }) => {
+      geoValueEl.textContent = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+      pickMapBtn.classList.remove('is-picking');
+      pickMapBtn.dataset.lng = String(lng);
+      pickMapBtn.dataset.lat = String(lat);
+      if (tempMarker) tempMarker.remove();
+      const el = document.createElement('div');
+      el.className = 'map-marker';
+      el.innerHTML = '<svg class="marker-icon" viewBox="0 0 24 36"><path d="M12 0C5.4 0 0 5.4 0 12c0 9 12 24 12 24s12-15 12-24C24 5.4 18.6 0 12 0z"/><circle cx="12" cy="12" r="5"/></svg>';
+      tempMarker = new maplibregl.Marker({ element: el }).setLngLat([lng, lat]).addTo(map);
+    };
+    geoPickResolve = resolve;
+  });
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const submitBtn = document.getElementById('form-submit-btn');
+    const text = document.getElementById('form-text').value.trim();
+    const author = document.getElementById('form-author').value.trim();
+    const email = document.getElementById('form-email').value.trim();
+    const lng = pickMapBtn?.dataset.lng;
+    const lat = pickMapBtn?.dataset.lat;
+    const imageInput = document.getElementById('form-image');
+    const t = translations[getLang()];
+
+    function resetFormState() {
+      form.reset();
+      if (geoValueEl) geoValueEl.textContent = '—';
+      if (pickMapBtn) { delete pickMapBtn.dataset.lng; delete pickMapBtn.dataset.lat; }
+      if (tempMarker) { tempMarker.remove(); tempMarker = null; }
+    }
+
+    if (FORMSPREE_FORM_ID) {
+      submitBtn.disabled = true;
+      const prevSubmitText = submitBtn.textContent;
+      submitBtn.textContent = '…';
+      const data = new FormData();
+      data.set('text', text || '(empty)');
+      data.set('author', author || '(empty)');
+      data.set('email', email || '(not provided)');
+      data.set('latitude', lat || '');
+      data.set('longitude', lng || '');
+      if (imageInput?.files?.[0]) data.set('image', imageInput.files[0]);
+      data.set('_replyto', email || '');
+      try {
+        const res = await fetch('https://formspree.io/f/' + FORMSPREE_FORM_ID, { method: 'POST', body: data, headers: { Accept: 'application/json' } });
+        if (res.ok) {
+          const successEl = document.createElement('p');
+          successEl.className = 'form-success-message';
+          successEl.textContent = t.formSuccessMessage || 'Thank you!';
+          form.prepend(successEl);
+          setTimeout(() => {
+            successEl.remove();
+            closeFormModal();
+            resetFormState();
+            submitBtn.disabled = false;
+            submitBtn.textContent = prevSubmitText;
+          }, 3500);
+        } else {
+          throw new Error();
+        }
+      } catch (err) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = prevSubmitText;
+        let errEl = form.querySelector('.form-error-message');
+        if (!errEl) { errEl = document.createElement('p'); errEl.className = 'form-error-message'; form.prepend(errEl); }
+        errEl.textContent = t.formErrorMessage || 'Something went wrong.';
+      }
+      return;
+    }
+
+    const fileName = imageInput?.files?.[0]?.name || '(no file)';
+    const body = [
+      'Place submission',
+      '',
+      'Text: ' + (text || '(empty)'),
+      'Author: ' + (author || '(empty)'),
+      'Email: ' + (email || '(not provided)'),
+      'Location: ' + (lat && lng ? `${lat}, ${lng}` : '(not set)'),
+      'Image: ' + fileName,
+      '',
+      'Please attach your image when sending this email.',
+    ].join('\n');
+    const subject = 'SEmap: Add my place';
+    window.location.href = 'mailto:buildtounderstand@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+    closeFormModal();
+    resetFormState();
+  });
+}
+
+initFormModal();

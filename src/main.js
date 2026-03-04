@@ -50,8 +50,63 @@ map.addControl(new maplibregl.NavigationControl(), 'top-right');
 const popupEl = document.getElementById('popup');
 let activeMarkerId = null;
 
+const translations = {
+  fr: {
+    title: 'Saint-Étienne à travers les yeux des artistes',
+    openArticle: "Ouvrir l'article",
+    contact: 'Si vous souhaitez ajouter votre lieu préféré à Saint-Étienne sur notre carte — écrivez-nous à',
+  },
+  en: {
+    title: 'Saint-Étienne through the eyes of artists',
+    openArticle: 'Open article',
+    contact: 'If you would like to add your favourite place in Saint-Étienne to our map — write to us at',
+  },
+  de: {
+    title: 'Saint-Étienne durch die Augen von Künstlern',
+    openArticle: 'Artikel öffnen',
+    contact: 'Wenn Sie Ihren Lieblingsort in Saint-Étienne zu unserer Karte hinzufügen möchten — schreiben Sie uns an',
+  },
+  es: {
+    title: 'Saint-Étienne a través de los ojos de los artistas',
+    openArticle: 'Abrir artículo',
+    contact: 'Si desea añadir su lugar favorito en Saint-Étienne a nuestro mapa — escríbanos a',
+  },
+  it: {
+    title: 'Saint-Étienne attraverso gli occhi degli artisti',
+    openArticle: 'Apri articolo',
+    contact: 'Se vuoi aggiungere il tuo luogo preferito a Saint-Étienne sulla nostra mappa — scrivici a',
+  },
+};
+
+const LANG_KEY = 'semap-lang';
+const DEFAULT_LANG = 'fr';
+
+function getLang() {
+  const stored = localStorage.getItem(LANG_KEY);
+  return translations[stored] ? stored : DEFAULT_LANG;
+}
+
+function setLang(lang) {
+  localStorage.setItem(LANG_KEY, lang);
+}
+
+function applyLang(lang) {
+  const t = translations[lang];
+  const titleEl = document.getElementById('map-title');
+  const contactEl = document.getElementById('footer-contact');
+  if (titleEl) titleEl.textContent = t.title;
+  if (contactEl) {
+    contactEl.innerHTML = `${t.contact} <a href="mailto:buildtounderstand@gmail.com">buildtounderstand@gmail.com</a>`;
+  }
+  document.querySelectorAll('#lang-switcher button').forEach((btn) => {
+    btn.classList.toggle('is-active', btn.getAttribute('data-lang') === lang);
+  });
+}
+
 function articleUrl(slug) {
-  return `${BASE}articles/${slug}.html`;
+  const lang = getLang();
+  const base = `${BASE}articles/${slug}.html`;
+  return lang === DEFAULT_LANG ? base : `${base}?lang=${lang}`;
 }
 
 function imageUrl(filename) {
@@ -64,16 +119,17 @@ function openPopup(marker) {
 
   const url = articleUrl(marker.slug);
   const imgSrc = imageUrl(marker.image);
+  const openArticleText = translations[getLang()].openArticle;
 
   popupEl.innerHTML = `
     <article class="popup-card" role="article">
-      <a href="${url}" class="popup-image-link" aria-label="Open article: ${marker.title}">
+      <a href="${url}" class="popup-image-link" aria-label="${escapeHtml(openArticleText)}: ${escapeHtml(marker.title)}">
         <img src="${imgSrc}" alt="" class="popup-image" loading="lazy" />
       </a>
       <div class="popup-body">
         <h2 class="popup-title">${escapeHtml(marker.title)}</h2>
         <p class="popup-excerpt">${escapeHtml(marker.excerpt)}</p>
-        <a href="${url}" class="popup-cta">Open article</a>
+        <a href="${url}" class="popup-cta">${escapeHtml(openArticleText)}</a>
       </div>
     </article>
   `;
@@ -119,6 +175,15 @@ map.on('load', () => {
       .setLngLat([marker.coordinates.lng, marker.coordinates.lat])
       .addTo(map);
   });
+});
+
+applyLang(getLang());
+document.getElementById('lang-switcher').addEventListener('click', (e) => {
+  const btn = e.target.closest('button[data-lang]');
+  if (!btn) return;
+  const lang = btn.getAttribute('data-lang');
+  setLang(lang);
+  applyLang(lang);
 });
 
 map.on('click', () => closePopup());

@@ -6,11 +6,24 @@
     <title>SEmap — Saint-Étienne Map</title>
   </head>
   <body>
+    <header class="map-header" id="map-header">
+      <h1 class="map-title" id="map-title">Saint-Étienne à travers les yeux des artistes</h1>
+      <nav class="lang-switcher" id="lang-switcher" aria-label="Choisir la langue">
+        <button type="button" data-lang="fr" aria-label="Français">FR</button>
+        <button type="button" data-lang="en" aria-label="English">EN</button>
+        <button type="button" data-lang="de" aria-label="Deutsch">DE</button>
+        <button type="button" data-lang="es" aria-label="Español">ES</button>
+        <button type="button" data-lang="it" aria-label="Italiano">IT</button>
+      </nav>
+    </header>
     <div id="map"></div>
     <div id="popup" class="popup" aria-hidden="true"></div>
-    <footer class="attribution-bar">
-      <span>© OpenStreetMap contributors</span>
-      <span>Map style/tiles © MapTiler</span>
+    <footer class="footer-bar">
+      <p class="footer-contact" id="footer-contact">Si vous souhaitez ajouter votre lieu préféré à Saint-Étienne sur notre carte — écrivez-nous à <a href="mailto:buildtounderstand@gmail.com">buildtounderstand@gmail.com</a></p>
+      <div class="attribution-bar">
+        <span>© OpenStreetMap contributors</span>
+        <span>Map style/tiles © MapTiler</span>
+      </div>
     </footer>
     <script type="module" src="/src/main.js"></script>
   </body>

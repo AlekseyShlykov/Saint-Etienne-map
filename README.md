@@ -2,7 +2,7 @@
 
 A static full-screen map of the Saint-Étienne area with clickable markers and article previews. Built with Vite (vanilla JS), MapLibre GL JS, and MapTiler Bright basemap. Hosted on GitHub Pages.
 
-## Features
+## Features1
 
 - Full-screen map restricted to Saint-Étienne and ~30 km (bounds, zoom limits).
 - Clickable markers with custom SVG pins.

@@ -575,9 +575,13 @@ html, body {
 
 .article-sketches {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 0.75rem;
   margin: 0 0 1rem;
+}
+
+.article-sketches--pair {
+  grid-template-columns: 1fr 1fr;
 }
 
 .article-sketches img {
@@ -585,6 +589,42 @@ html, body {
   height: auto;
   vertical-align: middle;
   border-radius: 4px;
+}
+
+.article-social {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #e8e8e8;
+}
+
+.article-social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #333;
+  text-decoration: none;
+  transition: color 0.2s ease, transform 0.15s ease;
+}
+
+.article-social-link:hover {
+  color: #c62828;
+  transform: scale(1.06);
+}
+
+.article-social-link:focus-visible {
+  outline: 2px solid #c62828;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.article-social-icon {
+  width: 28px;
+  height: 28px;
+  display: block;
 }
 
 /* MapLibre attribution: keep compact */
@@ -597,7 +637,7 @@ html, body {
 }
 
 @media (max-width: 480px) {
-  .article-sketches {
+  .article-sketches--pair {
     grid-template-columns: 1fr;
   }
 

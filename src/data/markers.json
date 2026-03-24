@@ -46,5 +46,29 @@
     "image": "parc-europe.png",
     "coordinates": { "lng": 4.416003231681164, "lat": 45.42115629756233 },
     "slug": "parc-europe"
+  },
+  {
+    "id": "3",
+    "title": {
+      "fr": "Médiathèque de Tarentaize",
+      "en": "Médiathèque de Tarentaize",
+      "de": "Médiathèque de Tarentaize",
+      "es": "Mediateca de Tarentaize",
+      "it": "Mediateca di Tarentaize",
+      "ja": "タランタイズ・メディアテーク",
+      "ru": "Медиатека Тарантез"
+    },
+    "excerpt": {
+      "fr": "Ekaterina Zueva (Katya Evazu) raconte comment la médiathèque Tarentaize l’a aidée à s’intégrer à Saint-Étienne : langue, culture, club de conversation, Cinémathèque et calme du bâtiment.",
+      "en": "Ekaterina Zueva (Katya Evazu) on how Médiathèque Tarentaize helped her settle in Saint-Étienne — language, culture, conversation club, Cinémathèque, and quiet in a beautiful building.",
+      "de": "Ekaterina Zueva (Katya Evazu) erzählt, wie die Médiathèque Tarentaize ihr half, in Saint-Étienne anzukommen — Sprache, Kultur, Gesprächsklub, Cinémathèque und Ruhe im schönen Gebäude.",
+      "es": "Ekaterina Zueva (Katya Evazu) cuenta cómo la mediateca Tarentaize le ayudó a integrarse en Saint-Étienne: idioma, cultura, club de conversación, Cinémathèque y calma en un edificio hermoso.",
+      "it": "Ekaterina Zueva (Katya Evazu) racconta come la médiathèque Tarentaize l’ha aiutata a integrarsi a Saint-Étienne: lingua, cultura, club di conversazione, Cinémathèque e silenzio in un edificio splendido.",
+      "ja": "エカテリーナ・ズエワ（Katya Evazu）が、サン＝テティエンヌでの暮らしを支えてくれたタランタイズ・メディアテークについて — 言語、文化、会話クラブ、シネマテーク、建物の静けさ。",
+      "ru": "Екатерина Зуева (Katya Evazu) о том, как медиатека Тарантез помогла ей освоиться в Сент-Этьене: язык, культура, разговорный клуб, Синематека и тишина прекрасного здания."
+    },
+    "image": "Mediatheque.png",
+    "coordinates": { "lng": 4.380246284337398, "lat": 45.435791383531736 },
+    "slug": "mediatheque-tarentaize"
   }
 ]

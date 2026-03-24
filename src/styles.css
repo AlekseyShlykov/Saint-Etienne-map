@@ -469,13 +469,17 @@ html, body {
 
 .popup-image-link {
   display: block;
+  position: relative;
   line-height: 0;
   background: #eee;
+  aspect-ratio: 1448 / 1024;
 }
 
 .popup-image {
+  position: absolute;
+  inset: 0;
   width: 100%;
-  height: 180px;
+  height: 100%;
   object-fit: cover;
   vertical-align: middle;
 }
@@ -541,8 +545,10 @@ html, body {
 }
 
 .article-hero {
+  display: block;
   width: 100%;
-  height: 220px;
+  aspect-ratio: 1448 / 1024;
+  height: auto;
   object-fit: cover;
   background: #eee;
   vertical-align: middle;
@@ -567,6 +573,20 @@ html, body {
   color: #333;
 }
 
+.article-sketches {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin: 0 0 1rem;
+}
+
+.article-sketches img {
+  width: 100%;
+  height: auto;
+  vertical-align: middle;
+  border-radius: 4px;
+}
+
 /* MapLibre attribution: keep compact */
 .maplibregl-ctrl-attrib {
   font-size: 10px;
@@ -577,6 +597,10 @@ html, body {
 }
 
 @media (max-width: 480px) {
+  .article-sketches {
+    grid-template-columns: 1fr;
+  }
+
   .map-header {
     padding: 0.5rem 0.75rem;
   }
@@ -593,10 +617,6 @@ html, body {
   .popup {
     padding: 0.75rem;
     padding-bottom: 2.75rem;
-  }
-
-  .popup-image {
-    height: 160px;
   }
 
   .popup-body {

@@ -124,6 +124,11 @@ html, body {
   display: block;
 }
 
+img.article-social-icon--behance-img {
+  object-fit: contain;
+  vertical-align: middle;
+}
+
 @media (max-width: 480px) {
   .article-sketches--pair {
     grid-template-columns: 1fr;

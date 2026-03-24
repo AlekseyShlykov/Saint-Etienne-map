@@ -627,6 +627,11 @@ html, body {
   display: block;
 }
 
+img.article-social-icon--behance-img {
+  object-fit: contain;
+  vertical-align: middle;
+}
+
 /* MapLibre attribution: keep compact */
 .maplibregl-ctrl-attrib {
   font-size: 10px;

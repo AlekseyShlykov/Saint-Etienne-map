@@ -296,7 +296,8 @@ function applyLang(lang) {
   });
   if (activeMarkerId) {
     const marker = markersData.find((m) => m.id === activeMarkerId);
-    if (marker) openPopup(marker);
+    if (marker && !marker.hidden) openPopup(marker);
+    else closePopup();
   }
 }
 
@@ -329,6 +330,7 @@ function imageUrl(filename) {
 }
 
 function openPopup(marker) {
+  if (marker.hidden) return;
   if (activeMarkerId === marker.id) return;
   activeMarkerId = marker.id;
 
@@ -386,7 +388,7 @@ function createMarkerElement(marker) {
 }
 
 map.on('load', () => {
-  markersData.forEach((marker) => {
+  markersData.filter((m) => !m.hidden).forEach((marker) => {
     const el = createMarkerElement(marker);
     new maplibregl.Marker({ element: el })
       .setLngLat([marker.coordinates.lng, marker.coordinates.lat])

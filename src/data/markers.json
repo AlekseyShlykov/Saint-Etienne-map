@@ -21,7 +21,8 @@
     },
     "image": "musee-mine.png",
     "coordinates": { "lng": 4.376820731570836, "lat": 45.43882696765149 },
-    "slug": "musee-mine"
+    "slug": "musee-mine",
+    "hidden": true
   },
   {
     "id": "2",
@@ -45,7 +46,8 @@
     },
     "image": "parc-europe.png",
     "coordinates": { "lng": 4.416003231681164, "lat": 45.42115629756233 },
-    "slug": "parc-europe"
+    "slug": "parc-europe",
+    "hidden": true
   },
   {
     "id": "3",

@@ -67,6 +67,7 @@ html, body {
 .article-content p {
   margin: 0 0 1rem;
   color: #333;
+  white-space: pre-line;
 }
 
 .article-sketches {

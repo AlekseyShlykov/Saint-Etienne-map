@@ -25,13 +25,18 @@
         if (h1) h1.textContent = content.title;
         var paragraphs = content.paragraphs || [];
         var pNodes = main.querySelectorAll('p');
+        var socialNav = main.querySelector('.article-social');
         for (var i = 0; i < paragraphs.length; i++) {
           if (pNodes[i]) {
             pNodes[i].textContent = paragraphs[i];
           } else {
             var p = document.createElement('p');
             p.textContent = paragraphs[i];
-            main.appendChild(p);
+            if (socialNav) {
+              main.insertBefore(p, socialNav);
+            } else {
+              main.appendChild(p);
+            }
           }
         }
         for (var j = pNodes.length - 1; j >= paragraphs.length; j--) {

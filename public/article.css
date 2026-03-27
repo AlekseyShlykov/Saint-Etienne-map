@@ -88,6 +88,20 @@ html, body {
   border-radius: 4px;
 }
 
+.article-content:has(+ .article-social) {
+  padding-bottom: 0;
+}
+
+main.article-content + .article-social {
+  flex: 1;
+  max-width: 640px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 1.25rem 3rem;
+  box-sizing: border-box;
+}
+
 .article-social {
   display: flex;
   flex-wrap: wrap;

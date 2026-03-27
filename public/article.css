@@ -124,7 +124,7 @@ html, body {
   display: block;
 }
 
-img.article-social-icon--behance-img {
+img.article-social-icon--img {
   object-fit: contain;
   vertical-align: middle;
 }

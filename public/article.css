@@ -70,6 +70,10 @@ html, body {
   white-space: pre-line;
 }
 
+.article-content p.article-intro-break {
+  white-space: pre-wrap;
+}
+
 .article-sketches {
   display: grid;
   grid-template-columns: 1fr;

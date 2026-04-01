@@ -17,6 +17,20 @@ const MIN_ZOOM = 9;
 const MAX_ZOOM = 17;
 const INITIAL_ZOOM = 11.5;
 
+/** Decorative dots across Saint-Étienne (no links / no popups) — [lng, lat] */
+const DECORATIVE_POINTS = [
+  [4.3859, 45.4407],
+  [4.3914, 45.4431],
+  [4.3798, 45.4356],
+  [4.4042, 45.4289],
+  [4.3681, 45.4462],
+  [4.4127, 45.4215],
+  [4.3955, 45.4568],
+  [4.3529, 45.4334],
+  [4.4281, 45.4389],
+  [4.3735, 45.4241],
+];
+
 const DEMO_STYLE = 'https://demotiles.maplibre.org/style.json';
 
 const styleUrl = useMapTiler
@@ -369,6 +383,13 @@ function escapeHtml(text) {
   return div.innerHTML;
 }
 
+function createDecorativeMarkerElement() {
+  const el = document.createElement('span');
+  el.className = 'map-marker-decorative';
+  el.setAttribute('aria-hidden', 'true');
+  return el;
+}
+
 function createMarkerElement(marker) {
   const el = document.createElement('button');
   el.type = 'button';
@@ -392,6 +413,11 @@ map.on('load', () => {
     const el = createMarkerElement(marker);
     new maplibregl.Marker({ element: el })
       .setLngLat([marker.coordinates.lng, marker.coordinates.lat])
+      .addTo(map);
+  });
+  DECORATIVE_POINTS.forEach(([lng, lat]) => {
+    new maplibregl.Marker({ element: createDecorativeMarkerElement() })
+      .setLngLat([lng, lat])
       .addTo(map);
   });
 });

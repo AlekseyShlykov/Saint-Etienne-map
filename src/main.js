@@ -385,8 +385,14 @@ function escapeHtml(text) {
 
 function createDecorativeMarkerElement() {
   const el = document.createElement('span');
-  el.className = 'map-marker-decorative';
+  el.className = 'map-marker map-marker--decorative';
   el.setAttribute('aria-hidden', 'true');
+  el.innerHTML = `
+    <svg class="marker-icon" viewBox="0 0 24 36" aria-hidden="true">
+      <path d="M12 0C5.4 0 0 5.4 0 12c0 9 12 24 12 24s12-15 12-24C24 5.4 18.6 0 12 0z"/>
+      <circle cx="12" cy="12" r="5"/>
+    </svg>
+  `;
   return el;
 }
 

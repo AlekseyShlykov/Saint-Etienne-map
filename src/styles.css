@@ -23,9 +23,9 @@ html, body {
   bottom: 0;
 }
 
-/* Basemap only: ~80% transparent so markers/controls stay crisp */
+/* Basemap only: ~20% transparent so markers/controls stay crisp */
 #map .maplibregl-canvas {
-  opacity: 0.2;
+  opacity: 0.8;
 }
 
 .map-header {
@@ -399,16 +399,9 @@ html, body {
   font-size: 0.9rem;
 }
 
-.map-marker-decorative {
-  display: block;
-  width: 12px;
-  height: 12px;
-  margin: -6px 0 0 -6px;
-  border-radius: 50%;
-  background: #8b4513;
-  border: 2px solid #fff;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+.map-marker--decorative {
   pointer-events: none;
+  cursor: default;
 }
 
 .map-marker {

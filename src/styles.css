@@ -399,11 +399,6 @@ html, body {
   font-size: 0.9rem;
 }
 
-.map-marker--decorative {
-  pointer-events: none;
-  cursor: default;
-}
-
 .map-marker {
   width: 36px;
   height: 36px;

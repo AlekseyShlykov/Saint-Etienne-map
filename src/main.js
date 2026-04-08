@@ -17,60 +17,6 @@ const MIN_ZOOM = 9;
 const MAX_ZOOM = 17;
 const INITIAL_ZOOM = 11.5;
 
-/** Decorative pins across Saint-Étienne (same look as article markers; no popups) — [lng, lat] */
-const DECORATIVE_POINTS = [
-  [4.3859, 45.4407],
-  [4.3914, 45.4431],
-  [4.3798, 45.4356],
-  [4.4042, 45.4289],
-  [4.3681, 45.4462],
-  [4.4127, 45.4215],
-  [4.3955, 45.4568],
-  [4.3529, 45.4334],
-  [4.4281, 45.4389],
-  [4.3735, 45.4241],
-  [4.3824, 45.4463],
-  [4.3981, 45.4322],
-  [4.4068, 45.4415],
-  [4.3576, 45.4381],
-  [4.3652, 45.4319],
-  [4.3718, 45.4514],
-  [4.3877, 45.4479],
-  [4.4019, 45.4346],
-  [4.4153, 45.4298],
-  [4.4221, 45.4447],
-  [4.4359, 45.4316],
-  [4.3398, 45.4395],
-  [4.3446, 45.4253],
-  [4.3602, 45.4178],
-  [4.3748, 45.4146],
-  [4.3896, 45.4244],
-  [4.3997, 45.4179],
-  [4.3847, 45.4318],
-  [4.3779, 45.4276],
-  [4.3928, 45.4375],
-  [4.4006, 45.4458],
-  [4.4083, 45.4521],
-  [4.4196, 45.4475],
-  [4.4294, 45.4423],
-  [4.4377, 45.4279],
-  [4.4452, 45.4348],
-  [4.3316, 45.4477],
-  [4.3549, 45.4506],
-  [4.3624, 45.4579],
-  [4.3478, 45.4357],
-  [4.3839, 45.4518],
-  [4.3936, 45.4504],
-  [4.3629, 45.4408],
-  [4.3712, 45.4344],
-  [4.3889, 45.4216],
-  [4.3964, 45.4168],
-  [4.4108, 45.4124],
-  [4.4179, 45.4186],
-  [4.4245, 45.4251],
-  [4.4312, 45.4175],
-];
-
 const DEMO_STYLE = 'https://demotiles.maplibre.org/style.json';
 
 const styleUrl = useMapTiler
@@ -423,19 +369,6 @@ function escapeHtml(text) {
   return div.innerHTML;
 }
 
-function createDecorativeMarkerElement() {
-  const el = document.createElement('span');
-  el.className = 'map-marker map-marker--decorative';
-  el.setAttribute('aria-hidden', 'true');
-  el.innerHTML = `
-    <svg class="marker-icon" viewBox="0 0 24 36" aria-hidden="true">
-      <path d="M12 0C5.4 0 0 5.4 0 12c0 9 12 24 12 24s12-15 12-24C24 5.4 18.6 0 12 0z"/>
-      <circle cx="12" cy="12" r="5"/>
-    </svg>
-  `;
-  return el;
-}
-
 function createMarkerElement(marker) {
   const el = document.createElement('button');
   el.type = 'button';
@@ -455,17 +388,14 @@ function createMarkerElement(marker) {
 }
 
 map.on('load', () => {
-  markersData.filter((m) => !m.hidden).forEach((marker) => {
-    const el = createMarkerElement(marker);
-    new maplibregl.Marker({ element: el })
-      .setLngLat([marker.coordinates.lng, marker.coordinates.lat])
-      .addTo(map);
-  });
-  DECORATIVE_POINTS.forEach(([lng, lat]) => {
-    new maplibregl.Marker({ element: createDecorativeMarkerElement() })
-      .setLngLat([lng, lat])
-      .addTo(map);
-  });
+  markersData
+    .filter((m) => m.slug === 'mediatheque-tarentaize')
+    .forEach((marker) => {
+      const el = createMarkerElement(marker);
+      new maplibregl.Marker({ element: el })
+        .setLngLat([marker.coordinates.lng, marker.coordinates.lat])
+        .addTo(map);
+    });
 });
 
 applyLang(getLang());
